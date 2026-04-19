@@ -1,0 +1,10 @@
+## Interface: 11508
+## Title:     cfStatusText
+## Notes:     Show health/mana numbers on target and XP bar
+## Author:    Cowfoot
+## Version:   1.0
+
+Core.lua
+WatchedBar.lua
+TargetFrame.lua
+Nameplate.lua
