@@ -1,4 +1,8 @@
+local addon = cfStatusText
+
 local repText
+local eventFrame = CreateFrame("Frame")
+local enabled
 
 local function GetRepTextString()
 	if repText then return repText end
@@ -55,11 +59,24 @@ local function SyncWatchedBars()
 	textObj:SetShown(text ~= "")
 end
 
-local function HookWatchedBarEvents()
-	local frame = CreateFrame("Frame")
-	frame:RegisterEvent("CVAR_UPDATE")
-	frame:RegisterEvent("UPDATE_FACTION")
-	frame:SetScript("OnEvent", function(_, event, cvar)
+local function HideWatchedBars()
+	if MainMenuExpBar then
+		SetCVar("xpBarText", "0")
+		TextStatusBar_UpdateTextString(MainMenuExpBar)
+	end
+
+	local textObj = GetRepTextString()
+	if textObj then
+		textObj:Hide()
+	end
+end
+
+function addon.EnableWatchedBar()
+	if enabled then return end
+	enabled = true
+	eventFrame:RegisterEvent("CVAR_UPDATE")
+	eventFrame:RegisterEvent("UPDATE_FACTION")
+	eventFrame:SetScript("OnEvent", function(_, event, cvar)
 		if event == "UPDATE_FACTION" or cvar == "xpBarText" or cvar == "statusTextDisplay" then
 			SyncWatchedBars()
 			return
@@ -68,16 +85,25 @@ local function HookWatchedBarEvents()
 			SyncWatchedBars()
 		end
 	end)
+
+	SyncWatchedBars()
+end
+
+function addon.DisableWatchedBar()
+	if not enabled then return end
+	enabled = false
+	eventFrame:UnregisterAllEvents()
+	eventFrame:SetScript("OnEvent", nil)
+	HideWatchedBars()
 end
 
 EventUtil.ContinueOnAddOnLoaded("cfStatusText", function()
-	SyncWatchedBars()
-	HookWatchedBarEvents()
-
 	local frame = CreateFrame("Frame")
 	frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 	frame:SetScript("OnEvent", function(self)
 		self:UnregisterAllEvents()
-		SyncWatchedBars()
+		if enabled then
+			SyncWatchedBars()
+		end
 	end)
 end)

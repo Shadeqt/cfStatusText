@@ -1,4 +1,6 @@
 local addon = cfStatusText
+local eventFrame = CreateFrame("Frame")
+local enabled
 
 local function GetHealthBar(unit)
 	local plate = C_NamePlate.GetNamePlateForUnit(unit)
@@ -63,13 +65,29 @@ local function UpdateExistingNameplates()
 	end
 end
 
-local function HookNameplateEvents()
-	local frame = CreateFrame("Frame")
-	frame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-	frame:RegisterEvent("UNIT_HEALTH")
-	frame:RegisterEvent("UNIT_MAXHEALTH")
-	frame:RegisterEvent("CVAR_UPDATE")
-	frame:SetScript("OnEvent", function(_, event, arg1)
+local function HideNameplateText(unit)
+	local bar = GetHealthBar(unit)
+	if not bar then return end
+	addon.HideBarText(bar)
+end
+
+local function HideExistingNameplates()
+	for _, plate in ipairs(C_NamePlate.GetNamePlates()) do
+		local unit = plate.namePlateUnitToken or plate.UnitFrame and plate.UnitFrame.unit
+		if unit then
+			HideNameplateText(unit)
+		end
+	end
+end
+
+function addon.EnableNameplates()
+	if enabled then return end
+	enabled = true
+	eventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+	eventFrame:RegisterEvent("UNIT_HEALTH")
+	eventFrame:RegisterEvent("UNIT_MAXHEALTH")
+	eventFrame:RegisterEvent("CVAR_UPDATE")
+	eventFrame:SetScript("OnEvent", function(_, event, arg1)
 		if event == "NAME_PLATE_UNIT_ADDED" or event == "UNIT_HEALTH" or event == "UNIT_MAXHEALTH" then
 			UpdateNameplateText(arg1)
 			return
@@ -79,9 +97,14 @@ local function HookNameplateEvents()
 			UpdateExistingNameplates()
 		end
 	end)
+
+	UpdateExistingNameplates()
 end
 
-EventUtil.ContinueOnAddOnLoaded("cfStatusText", function()
-	HookNameplateEvents()
-	UpdateExistingNameplates()
-end)
+function addon.DisableNameplates()
+	if not enabled then return end
+	enabled = false
+	eventFrame:UnregisterAllEvents()
+	eventFrame:SetScript("OnEvent", nil)
+	HideExistingNameplates()
+end

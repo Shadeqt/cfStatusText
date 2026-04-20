@@ -3,8 +3,12 @@
 ## Notes:     Show health/mana numbers on target and XP bar
 ## Author:    Cowfoot
 ## Version:   1.0
+## SavedVariablesPerCharacter: cfStatusTextDB
 
+Init.lua
 Core.lua
+GUI/_Factory.lua
+GUI/Settings.lua
 WatchedBar.lua
 TargetFrame.lua
 Nameplate.lua

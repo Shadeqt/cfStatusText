@@ -1,4 +1,3 @@
-cfStatusText = cfStatusText or {}
 local addon = cfStatusText
 
 function addon.CreateBarText(bar, parent, offsets)
@@ -17,6 +16,13 @@ function addon.CreateBarText(bar, parent, offsets)
 	bar.RightText = parent:CreateFontString(nil, "OVERLAY", "TextStatusBarText")
 	SetTextPoint(bar.RightText, offsets.right, "RIGHT")
 	return bar.TextString, bar.LeftText, bar.RightText
+end
+
+function addon.HideBarText(bar)
+	if not bar then return end
+	if bar.TextString then bar.TextString:Hide() end
+	if bar.LeftText then bar.LeftText:Hide() end
+	if bar.RightText then bar.RightText:Hide() end
 end
 
 function addon.IsHealthKnown(unit)
