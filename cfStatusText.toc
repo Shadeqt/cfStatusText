@@ -1,14 +1,11 @@
 ## Interface: 11508
-## Title:     cfStatusText
-## Notes:     Show health/mana numbers on target and XP bar
-## Author:    Cowfoot
-## Version:   1.0
-## SavedVariablesPerCharacter: cfStatusTextDB
+## Title: cfStatusText
+## Notes: Status text on the target frame, nameplates, and watched XP/rep bars
+## Author: Cowfoot
+## Version: 2.0
 
 Init.lua
 Core.lua
-GUI/_Factory.lua
-GUI/Settings.lua
-Features/WatchedBar.lua
-Features/TargetFrame.lua
-Features/Nameplate.lua
+Features\Nameplate.lua
+Features\TargetFrame.lua
+Features\WatchedBar.lua
