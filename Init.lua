@@ -27,13 +27,8 @@ end
 addon.db = cfStatusTextDB
 
 EventUtil.ContinueOnAddOnLoaded("cfStatusText", function()
-	if addon.db[addon.KEYS.TARGET] then
-		addon.EnableTarget()
-	end
-	if addon.db[addon.KEYS.NAMEPLATES] then
-		addon.EnableNameplates()
-	end
-	if addon.db[addon.KEYS.WATCHED_BAR] then
-		addon.EnableWatchedBar()
-	end
+	addon.InitSettings()
+	if addon.db[addon.KEYS.TARGET]      then addon.EnableTarget()      end
+	if addon.db[addon.KEYS.NAMEPLATES]  then addon.EnableNameplates()  end
+	if addon.db[addon.KEYS.WATCHED_BAR] then addon.EnableWatchedBar()  end
 end)

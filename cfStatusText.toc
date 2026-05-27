@@ -9,6 +9,6 @@ Init.lua
 Core.lua
 GUI/_Factory.lua
 GUI/Settings.lua
-WatchedBar.lua
-TargetFrame.lua
-Nameplate.lua
+Features/WatchedBar.lua
+Features/TargetFrame.lua
+Features/Nameplate.lua
