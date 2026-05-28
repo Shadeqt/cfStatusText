@@ -4,8 +4,6 @@
 ## Author: Cowfoot
 ## Version: 2.0
 
-Init.lua
-Core.lua
-Features\Nameplate.lua
-Features\TargetFrame.lua
-Features\WatchedBar.lua
+Nameplate.lua
+TargetFrame.lua
+WatchedBar.lua
